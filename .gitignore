@@ -8,7 +8,7 @@ venv/
 env/
 .venv/
 
-# Environment variables (API keys, passwords)
+# Environment variables
 .env
 .env.*
 
@@ -34,7 +34,7 @@ Thumbs.db
 .coverage
 htmlcov/
 
-# Jupyter (если появится)
+# Jupyter
 .ipynb_checkpoints/
 
 # Build
