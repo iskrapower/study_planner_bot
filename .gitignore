@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+env/
+.venv/
+
+# Environment variables (API keys, passwords)
+.env
+.env.*
+
+# Django
+*.log
+db.sqlite3
+media/
+staticfiles/
+
+# PostgreSQL
+postgres_data/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Jupyter (если появится)
+.ipynb_checkpoints/
+
+# Build
+build/
+dist/
+*.egg-info/
+
+# Cache
+.cache/
+
+# Temporary files
+*.tmp
+*.bak
