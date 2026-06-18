@@ -3,3 +3,5 @@ djangorestframework==3.17.1
 aiogram==3.28.2
 psycopg2==2.9.12
 python-dotenv==1.2.2
+sqlalchemy==2.0.51
+asyncpg==0.31.0
