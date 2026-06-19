@@ -1,7 +1,7 @@
 import asyncio
 
-from database.database import engine
-from database.models import Base
+from bot.database.database import engine
+from bot.database.models import Base
 
 
 
