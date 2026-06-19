@@ -1,7 +1,7 @@
 from aiogram import Router
 from aiogram.types import Message
 from aiogram.filters import Command
-from database.repository import get_or_create_user
+from bot.database.repository import get_or_create_user
 
 
 router = Router()

@@ -1,7 +1,7 @@
 from sqlalchemy import select
 
-from database.database import async_session
-from database.models import User
+from bot.database.database import async_session
+from bot.database.models import User
 
 
 async def get_or_create_user(
