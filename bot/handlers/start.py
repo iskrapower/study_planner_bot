@@ -1,6 +1,7 @@
 from aiogram import Router
 from aiogram.types import Message
 from aiogram.filters import Command
+from database.repository import get_or_create_user
 
 
 router = Router()
@@ -9,23 +10,21 @@ router = Router()
 @router.message(Command("start"))
 async def start_handler(message: Message):
 
-    username = message.from_user.username
+    user = await get_or_create_user(
+        telegram_id=message.from_user.id,
+        username=message.from_user.username
+    )
 
     await message.answer(
         f"""
-            Hello, {username}!
+            Welcome, {user.username}!
 
-            I'm the AI ​​Research Planner Bot.
+            I am your AI Study Planner.
 
-            I've helped you:
-            - create a preparation plan;
-            - manage your time;
-            - write down a task.
-
-            Commands:
-
-            /plan — create a plan
-            /help — help
+            I can help you:
+            - create study plans;
+            - track tasks;
+            - organize preparation.
         """
     )
 
