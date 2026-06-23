@@ -12,6 +12,27 @@ from bot.states.planner_states import PlannerStates
 router = Router()
 
 
+async def send_split_message(message: Message, text: str, max_length: int = 4000):
+    if len(text) <= max_length:
+        await message.answer(text)
+        return
+
+    while text:
+        if len(text) <= max_length:
+            await message.answer(text)
+            break
+        
+        chunk_end = text.rfind('\n', 0, max_length)
+        if chunk_end == -1:
+            chunk_end = text.rfind(' ', 0, max_length)
+        if chunk_end == -1:
+            chunk_end = max_length
+
+        chunk = text[:chunk_end]
+        await message.answer(chunk)
+        text = text[chunk_end:].lstrip()
+
+
 @router.message(Command("plan"))
 async def plan_handler(
         message: Message,
@@ -78,6 +99,8 @@ async def hours_handler(
 
     data = await state.get_data()
 
+    status_message = await message.answer("🤖 Generating your AI study plan, please wait...")
+
 
     user = await get_or_create_user(
         telegram_id=message.from_user.id,
@@ -99,13 +122,11 @@ async def hours_handler(
     )
 
 
-    await message.answer(
-        f"""
-            Your AI study plan:
+    await status_message.delete()
 
-            {plan}
-        """
-    )
+    full_response = f"📚 Your AI study plan:\n\n{plan}"
+
+    await send_split_message(message=message, text=full_response)
 
 
     await state.clear()
