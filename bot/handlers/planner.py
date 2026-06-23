@@ -14,12 +14,12 @@ router = Router()
 
 async def send_split_message(message: Message, text: str, max_length: int = 4000):
     if len(text) <= max_length:
-        await message.answer(text)
+        await message.answer(text, parse_mode="HTML")
         return
 
     while text:
         if len(text) <= max_length:
-            await message.answer(text)
+            await message.answer(text, parse_mode="HTML")
             break
         
         chunk_end = text.rfind('\n', 0, max_length)
@@ -29,7 +29,7 @@ async def send_split_message(message: Message, text: str, max_length: int = 4000
             chunk_end = max_length
 
         chunk = text[:chunk_end]
-        await message.answer(chunk)
+        await message.answer(chunk, parse_mode="HTML")
         text = text[chunk_end:].lstrip()
 
 
