@@ -1,6 +1,6 @@
 from groq import Groq
 
-from config import GROQ_API_KEY
+from bot.config import GROQ_API_KEY
 
 
 client = Groq(
