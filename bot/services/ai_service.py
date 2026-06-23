@@ -1,6 +1,12 @@
-from google import genai
+import asyncio
 
-from bot.config import GEMINI_API_KEY
+from google import genai
+from google.genai.errors import ServerError
+
+from bot.config import (
+    GEMINI_API_KEY,
+    GEMINI_MODEL
+)
 
 
 client = genai.Client(
@@ -16,9 +22,7 @@ async def generate_study_plan(
 ):
 
     prompt = f"""
-                You are an AI study planner.
-
-                Create a realistic study plan.
+                Create a study plan.
 
                 Subject:
                 {subject}
@@ -26,22 +30,43 @@ async def generate_study_plan(
                 Exam date:
                 {exam_date}
 
-                Available study time:
-                {daily_hours} hours per day
+                Daily study time:
+                {daily_hours} hours.
 
-                Rules:
-                - Divide topics into weeks.
+                Requirements:
+                - Split the plan into weeks.
+                - Include learning topics.
+                - Include practice.
                 - Include revision.
-                - Include practice tasks.
-                - Make it realistic.
+                - Keep it realistic.
                 - Answer in English.
             """
 
 
-    response = await client.aio.models.generate_content(
-        model="gemini-2.5-flash",
-        contents=prompt
-    )
+    retries = 3
 
 
-    return response.text
+    for attempt in range(retries):
+
+        try:
+
+            response = await client.aio.models.generate_content(
+                model=GEMINI_MODEL,
+                contents=prompt
+            )
+
+            return response.text
+
+
+        except ServerError as error:
+
+            if attempt == retries - 1:
+                raise error
+
+
+            await asyncio.sleep(
+                2 ** attempt
+            )
+
+
+    return "Could not generate plan."
