@@ -2,6 +2,7 @@ from sqlalchemy import select
 
 from bot.database.database import async_session
 from bot.database.models import User
+from database.models import Subject
 
 
 async def get_or_create_user(
@@ -34,3 +35,28 @@ async def get_or_create_user(
 
 
         return user
+    
+
+async def create_subject(
+    user_id: int,
+    name: str,
+    exam_date: str,
+    daily_hours: int
+):
+
+    async with async_session() as session:
+
+        subject = Subject(
+            user_id=user_id,
+            name=name,
+            exam_date=exam_date,
+            daily_hours=daily_hours
+        )
+
+        session.add(subject)
+
+        await session.commit()
+
+        await session.refresh(subject)
+
+        return subject
