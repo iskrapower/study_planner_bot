@@ -4,8 +4,6 @@ This bot can create a personalised plan for exam preparation for user.
 
 ## Technologies
 
-* Django
-* Django Rest Framework
 * Aiogram
 * Psycopg2
 * Python-dotenv
