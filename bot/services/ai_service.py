@@ -1,18 +1,11 @@
-import asyncio
+from groq import Groq
 
-from google import genai
-from google.genai.errors import ServerError
+from config import GROQ_API_KEY
 
-from bot.config import (
-    GEMINI_API_KEY,
-    GEMINI_MODEL
+
+client = Groq(
+    api_key=GROQ_API_KEY
 )
-
-
-client = genai.Client(
-    api_key=GEMINI_API_KEY
-)
-
 
 
 async def generate_study_plan(
@@ -22,7 +15,9 @@ async def generate_study_plan(
 ):
 
     prompt = f"""
-                Create a study plan.
+                You are an AI study planner.
+
+                Create a realistic study plan.
 
                 Subject:
                 {subject}
@@ -30,43 +25,31 @@ async def generate_study_plan(
                 Exam date:
                 {exam_date}
 
-                Daily study time:
-                {daily_hours} hours.
+                Available study time:
+                {daily_hours} hours per day
+
 
                 Requirements:
                 - Split the plan into weeks.
-                - Include learning topics.
-                - Include practice.
-                - Include revision.
+                - Add topics to learn.
+                - Add practice tasks.
+                - Add revision days.
                 - Keep it realistic.
-                - Answer in English.
+                - Answer only in English.
             """
 
 
-    retries = 3
+    response = client.chat.completions.create(
+
+        model="llama-3.1-8b-instant",
+
+        messages=[
+            {
+                "role": "user",
+                "content": prompt
+            }
+        ]
+    )
 
 
-    for attempt in range(retries):
-
-        try:
-
-            response = await client.aio.models.generate_content(
-                model=GEMINI_MODEL,
-                contents=prompt
-            )
-
-            return response.text
-
-
-        except ServerError as error:
-
-            if attempt == retries - 1:
-                raise error
-
-
-            await asyncio.sleep(
-                2 ** attempt
-            )
-
-
-    return "Could not generate plan."
+    return response.choices[0].message.content
