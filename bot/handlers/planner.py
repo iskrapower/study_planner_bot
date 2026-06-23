@@ -2,8 +2,8 @@ from aiogram import Router
 from aiogram.types import Message
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
-from database.repository import create_subject
-from database.repository import get_or_create_user
+from bot.database.repository import create_subject
+from bot.database.repository import get_or_create_user
 
 from bot.states.planner_states import PlannerStates
 

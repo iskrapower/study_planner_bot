@@ -2,7 +2,7 @@ from sqlalchemy import select
 
 from bot.database.database import async_session
 from bot.database.models import User
-from database.models import Subject
+from bot.database.models import Subject
 
 
 async def get_or_create_user(
