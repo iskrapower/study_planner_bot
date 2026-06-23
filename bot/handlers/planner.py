@@ -2,6 +2,8 @@ from aiogram import Router
 from aiogram.types import Message
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
+from database.repository import create_subject
+from database.repository import get_or_create_user
 
 from bot.states.planner_states import PlannerStates
 
@@ -76,20 +78,34 @@ async def hours_handler(
     data = await state.get_data()
 
 
+    user = await get_or_create_user(
+        telegram_id=message.from_user.id,
+        username=message.from_user.username
+    )
+
+
+    subject = await create_subject(
+        user_id=user.id,
+        name=data["subject"],
+        exam_date=data["exam_date"],
+        daily_hours=int(data["daily_hours"])
+    )
+
+
     await message.answer(
         f"""
-            Your study plan settings:
+            Study plan saved!
 
             Subject:
-            {data['subject']}
+            {subject.name}
 
             Exam date:
-            {data['exam_date']}
+            {subject.exam_date}
 
             Daily hours:
-            {data['daily_hours']}
+            {subject.daily_hours}
 
-            I will generate your plan soon.
+            Next step: I will generate your AI study plan.
         """
     )
 
