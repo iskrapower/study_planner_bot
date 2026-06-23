@@ -4,6 +4,7 @@ from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from bot.database.repository import create_subject
 from bot.database.repository import get_or_create_user
+from bot.services.ai_service import generate_study_plan
 
 from bot.states.planner_states import PlannerStates
 
@@ -91,21 +92,18 @@ async def hours_handler(
         daily_hours=int(data["daily_hours"])
     )
 
+    plan = await generate_study_plan(
+        subject=data["subject"],
+        exam_date=data["exam_date"],
+        daily_hours=int(data["daily_hours"])
+    )
+
 
     await message.answer(
         f"""
-            Study plan saved!
+            Your AI study plan:
 
-            Subject:
-            {subject.name}
-
-            Exam date:
-            {subject.exam_date}
-
-            Daily hours:
-            {subject.daily_hours}
-
-            Next step: I will generate your AI study plan.
+            {plan}
         """
     )
 
