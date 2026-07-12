@@ -66,3 +66,27 @@ class Subject(Base):
         "User",
         back_populates="subjects"
     )
+
+class StudyPlan(Base):
+
+    __tablename__ = "study_plans"
+
+    id: Mapped[int] = mapped_column(
+        primary_key=True
+    )
+
+    content: Mapped[str]
+
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime,
+        default=datetime.utcnow
+    )
+
+    subject_id: Mapped[int] = mapped_column(
+        ForeignKey("subjects.id")
+    )
+
+    subject = relationship(
+        "Subject",
+        back_populates="study_plan"
+    )
