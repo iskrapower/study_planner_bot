@@ -67,6 +67,12 @@ class Subject(Base):
         back_populates="subjects"
     )
 
+    study_plan = relationship(
+        "StudyPlan",
+        back_populates="subject",
+        uselist=False
+    )
+
 class StudyPlan(Base):
 
     __tablename__ = "study_plans"
