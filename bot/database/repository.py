@@ -1,8 +1,7 @@
 from sqlalchemy import select
 
 from bot.database.database import async_session
-from bot.database.models import User
-from bot.database.models import Subject
+from bot.database.models import User, Subject, StudyPlan
 
 
 async def get_or_create_user(
@@ -60,3 +59,24 @@ async def create_subject(
         await session.refresh(subject)
 
         return subject
+    
+
+async def create_study_plan(
+    subject_id: int,
+    content: str
+):
+
+    async with async_session() as session:
+
+        plan = StudyPlan(
+            subject_id=subject_id,
+            content=content
+        )
+
+        session.add(plan)
+
+        await session.commit()
+
+        await session.refresh(plan)
+
+        return plan
