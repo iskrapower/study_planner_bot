@@ -16,5 +16,3 @@ This bot can create a personalised plan for exam preparation for user.
    * Date of exam
    * Length of study session
 3. Retrieve personalised plan for study
-4. Ticking completed tasks
-5. Send notifications 
